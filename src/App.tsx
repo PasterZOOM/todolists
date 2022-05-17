@@ -30,11 +30,9 @@ function App() {
     const todoListID_2 = v1()
 
     const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-            {id: todoListID_1, title: 'What to learn', filter: 'all'},
-            {id: todoListID_2, title: 'What to buy', filter: 'all'},
-        ]
-    )
-
+        {id: todoListID_1, title: 'What to learn', filter: 'all'},
+        {id: todoListID_2, title: 'What to buy', filter: 'all'},
+    ])
     const [tasks, setTasks] = useState<TaskStateType>({
         [todoListID_1]: [
             {id: v1(), title: 'HTML', isDone: true},
@@ -48,7 +46,7 @@ function App() {
             {id: v1(), title: 'Toilet paper', isDone: false},
         ]
     })
-
+    //tasks
     const removeTask = (taskID: string, todoListID: string) => {
         setTasks({...tasks, [todoListID]: tasks[todoListID].filter(t => t.id !== taskID)})
     }
@@ -70,6 +68,7 @@ function App() {
             [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, title} : t)
         })
     }
+    //todolist
     const changeFilter = (filter: FilterValuesType, todoListID: string) => {
         setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: filter} : tl))
     }
@@ -146,7 +145,7 @@ function App() {
                     <AddItemForm addItem={addTodoList}/>
                 </Grid>
                 <Grid container
-                spacing={5}>
+                      spacing={5}>
                     {todoListsFoRender}
                 </Grid>
             </Container>
