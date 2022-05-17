@@ -1,54 +1,155 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from './Todolist';
+import {TaskType, TodoList} from './TodoList';
 import {v1} from 'uuid';
+import AddItemForm from './AddItemForm';
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
+import {Menu} from '@material-ui/icons';
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
+// GUI
+// CLI - command line interface
+// C - create
+// R - read
+// U - update
+// D - delete
+export type FilterValuesType = 'all' | 'active' | 'completed'
+
+export type TodoListType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
+
+export type TaskStateType = {
+    [todoListID: string]: Array<TaskType>
+}
 
 function App() {
+    // BLL:
+    const todoListID_1 = v1()
+    const todoListID_2 = v1()
 
-    let [tasks, setTasks] = useState([
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'ReactJS', isDone: false},
-        {id: v1(), title: 'Rest API', isDone: false},
-        {id: v1(), title: 'GraphQL', isDone: false},
-    ]);
+    const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+            {id: todoListID_1, title: 'What to learn', filter: 'all'},
+            {id: todoListID_2, title: 'What to buy', filter: 'all'},
+        ]
+    )
 
-    function removeTask(id: string) {
-        let filteredTasks = tasks.filter(t => t.id !== id);
-        setTasks(filteredTasks);
+    const [tasks, setTasks] = useState<TaskStateType>({
+        [todoListID_1]: [
+            {id: v1(), title: 'HTML', isDone: true},
+            {id: v1(), title: 'CSS', isDone: true},// true -> false
+            {id: v1(), title: 'JS/TS', isDone: false},
+        ],
+        [todoListID_2]: [
+            {id: v1(), title: 'Beer', isDone: true},
+            {id: v1(), title: 'Meat', isDone: true},
+            {id: v1(), title: 'Cheeps', isDone: false},
+            {id: v1(), title: 'Toilet paper', isDone: false},
+        ]
+    })
+
+    const removeTask = (taskID: string, todoListID: string) => {
+        setTasks({...tasks, [todoListID]: tasks[todoListID].filter(t => t.id !== taskID)})
     }
-
-    const addTask = (newTiile:string) => {
-        let newTask = {id: v1(), title: newTiile, isDone: false}
-        setTasks([newTask,...tasks])
-
+    const addTask = (title: string, todoListID: string) => {
+        const newTask: TaskType = {
+            id: v1(), title, isDone: false
+        }
+        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
     }
-    let [filter, setFilter] = useState<FilterValuesType>('all');
-
-    let tasksForTodolist = tasks;
-
-    if (filter === 'active') {
-        tasksForTodolist = tasks.filter(t => !t.isDone);
+    const changeTaskStatus = (taskID: string, isDone: boolean, todoListID: string) => {
+        setTasks({
+            ...tasks,
+            [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, isDone} : t)
+        })
     }
-    if (filter === 'completed') {
-        tasksForTodolist = tasks.filter(t => t.isDone);
+    const changeTaskTitleStatus = (taskID: string, title: string, todoListID: string) => {
+        setTasks({
+            ...tasks,
+            [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, title} : t)
+        })
     }
+    const changeFilter = (filter: FilterValuesType, todoListID: string) => {
+        setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: filter} : tl))
+    }
+    const changeTodolistTitle = (todoListID: string, title: string) => {
+        setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, title} : tl))
+    }
+    const removeTodoList = (todoListID: string) => {
+        setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
+        const copy = {...tasks}
+        delete copy[todoListID]
+        setTasks(copy)
+    }
+    const addTodoList = (title: string) => {
+        const newTodoListID = v1()
+        const newTodoList: TodoListType = {
+            id: newTodoListID,
+            title: title,
+            filter: 'all'
+        }
+        setTodoLists([...todoLists, newTodoList])
+        setTasks({...tasks, [newTodoListID]: []})
+    }
+    // UI:
 
-    function changeFilter(value: FilterValuesType) {
-        setFilter(value);
-    }
+    const todoListsFoRender = todoLists.map(tl => {
+        let tasksForTodoList = tasks[tl.id] // весь массив
+        if (tl.filter === 'active') {
+            tasksForTodoList = tasksForTodoList.filter(t => !t.isDone)
+        }
+        if (tl.filter === 'completed') {
+            tasksForTodoList = tasksForTodoList.filter(t => t.isDone)
+        }
+        return (
+            <Grid item key={tl.id}>
+                <Paper variant={'outlined'}
+                       style={{padding: '10px'}}
+                       square>
+                    <TodoList
+                        title={tl.title}
+                        todoListID={tl.id}
+                        filter={tl.filter}
+                        tasks={tasksForTodoList}
+
+                        addTask={addTask}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        removeTodoList={removeTodoList}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTaskTitleStatus={changeTaskTitleStatus}
+                        changeTodolistTitle={changeTodolistTitle}
+                    />
+                </Paper>
+            </Grid>
+
+        )
+    })
 
     return (
         <div className="App">
-
-            <Todolist title="What to learn"
-                      tasks={tasksForTodolist}
-                      removeTask={removeTask}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
-            />
+            <AppBar position="static">
+                <Toolbar style={{justifyContent: 'space-between'}}>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        Todolists
+                    </Typography>
+                    <Button color="inherit" variant={'outlined'}>Logout</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container
+                      style={{padding: '10px'}}>
+                    <AddItemForm addItem={addTodoList}/>
+                </Grid>
+                <Grid container
+                spacing={5}>
+                    {todoListsFoRender}
+                </Grid>
+            </Container>
         </div>
     );
 }
