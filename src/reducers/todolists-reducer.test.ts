@@ -8,7 +8,6 @@ import {
 import {v1} from 'uuid';
 import {FilterValuesType, TodoListType} from '../App';
 
-
 test('correct todolist should be removed', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
