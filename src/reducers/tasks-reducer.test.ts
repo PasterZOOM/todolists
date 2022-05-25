@@ -1,6 +1,6 @@
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer';
 import {TasksStateType} from '../App';
-import {AddTodolistAC, RemoveTodoListAC} from './todolists-reducer';
+import {addTodolistAC, removeTodoListAC} from './todolists-reducer';
 
 test('correct task should be deleted from correct array', () => {
     const startState: TasksStateType = {
@@ -120,7 +120,7 @@ test('new array should be added when new todolist is added', () => {
         ]
     };
 
-    const action = AddTodolistAC("n,mvklsdjf");
+    const action = addTodolistAC("n,mvklsdjf");
 
     const endState = tasksReducer(startState, action)
 
@@ -151,7 +151,7 @@ test('property with todolistId should be deleted', () => {
         ]
     };
 
-    const action = RemoveTodoListAC("todolistId2");
+    const action = removeTodoListAC("todolistId2");
 
     const endState = tasksReducer(startState, action)
 
