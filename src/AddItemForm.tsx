@@ -32,9 +32,8 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                        onKeyPress={onKeyPressAddItem}
                        variant="outlined"
                        error={error}
-                       id="outlined-error-helper-text"
+                       
                        label={error ? 'Error' :'Enter text'}
-                       defaultValue="Hello World"
                        helperText={error && 'Title is required!'}
                        size={'small'}
             />
