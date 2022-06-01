@@ -21,7 +21,7 @@ export type TodoListType = {
 }
 
 export type TasksStateType = {
-    [todoListID: string]: Array<TaskType>
+    [key: string]: Array<TaskType>
 }
 
 function App() {

@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
-import {TaskType, TodoList} from './TodoList';
+
 import AddItemForm from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {addTodolistAC, changeFilterAC, changeTodolistTitleAC, removeTodoListAC} from './reducers/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './reducers/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './reducers/store';
+import {TaskType} from './TodoListWithRedux';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './reducers/tasks-reducer';
+import {TodoList} from './TodoList';
 
 // GUI
 // CLI - command line interface
@@ -24,7 +26,7 @@ export type TodoListType = {
 }
 
 export type TasksStateType = {
-    [todoListID: string]: Array<TaskType>
+    [key: string]: Array<TaskType>
 }
 
 function AppWithRedux() {
@@ -35,7 +37,6 @@ function AppWithRedux() {
 
     let dispatch = useDispatch()
 
-    //tasks
     const removeTask = (taskID: string, todoListID: string) => {
         dispatch(removeTaskAC(taskID, todoListID))
     }
@@ -63,6 +64,21 @@ function AppWithRedux() {
     }
 
     // UI:
+
+    /*const todoListsWithReduxFoRender = todoLists.map(tl => {
+        return (
+            <Grid item key={tl.id}>
+                <Paper variant={'outlined'}
+                       style={{padding: '10px'}}
+                       square>
+                    <TodoListWithRedux
+                        todoList={tl}
+                    />
+                </Paper>
+            </Grid>
+
+        )
+    })*/
     const todoListsFoRender = todoLists.map(tl => {
         let tasksForTodoList = tasks[tl.id] // весь массив
         if (tl.filter === 'active') {
@@ -117,6 +133,7 @@ function AppWithRedux() {
                 <Grid container
                       spacing={5}>
                     {todoListsFoRender}
+                    {/*{todoListsWithReduxFoRender}*/}
                 </Grid>
             </Container>
         </div>
