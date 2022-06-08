@@ -80,8 +80,6 @@ function AppWithRedux() {
         )
     })*/
     const todoListsFoRender = todoLists.map(tl => {
-
-
         return (
             <Grid item key={tl.id}>
                 <Paper variant={'outlined'}
@@ -102,7 +100,6 @@ function AppWithRedux() {
                     />
                 </Paper>
             </Grid>
-
         )
     })
 

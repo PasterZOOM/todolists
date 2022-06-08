@@ -28,32 +28,32 @@ export type TaskType = {
 export const TodoList: FC<TodoListPropsType> = React.memo((props) => {
     console.log('TodoList')
 
-    let tasksForTodoList = props.tasks
+    let tasks = props.tasks
     if (props.filter === 'active') {
-        tasksForTodoList = tasksForTodoList.filter(t => !t.isDone)
+        tasks = tasks.filter(t => !t.isDone)
     }
     if (props.filter === 'completed') {
-        tasksForTodoList = tasksForTodoList.filter(t => t.isDone)
+        tasks = tasks.filter(t => t.isDone)
     }
 
     const removeTodoList = useCallback(() => {
         props.removeTodoList(props.todoListID)
-    }, [props.removeTodoList, props.todoListID])
+    }, [props])
     const removeTask = useCallback((id: string) => {
         props.removeTask(id, props.todoListID)
-    }, [props.removeTask, props.todoListID])
+    }, [props])
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.todoListID)
-    }, [props.addTask, props.todoListID])
+    }, [props])
     const changeTodolistTitle = useCallback((title: string) => {
         props.changeTodolistTitle(props.todoListID, title)
-    }, [props.changeTodolistTitle, props.todoListID])
+    }, [props])
     const changeFilter = useCallback((filter: FilterValuesType) => {
         props.changeFilter(filter, props.todoListID)
-    }, [props.changeFilter, props.todoListID])
+    }, [props])
 
     const tasksListItems = props.tasks.length
-        ? tasksForTodoList.map(t => <Task key={t.id}
+        ? tasks.map(t => <Task key={t.id}
                                           task={t}
                                           todoListID={props.todoListID}
                                           removeTask={removeTask}
@@ -80,7 +80,6 @@ export const TodoList: FC<TodoListPropsType> = React.memo((props) => {
             <List>
                 {tasksListItems}
             </List>
-
             <div>
                 <ButtonGroup size={'small'}
                              variant={'contained'}>
@@ -96,5 +95,5 @@ export const TodoList: FC<TodoListPropsType> = React.memo((props) => {
                 </ButtonGroup>
             </div>
         </div>
-    );
+    )
 })

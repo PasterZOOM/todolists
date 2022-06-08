@@ -14,13 +14,14 @@ type TaskPropsType = {
 
 export const Task: FC<TaskPropsType> = React.memo((props) => {
 
+    const taskClasses = props.task.isDone ? 'is-done' : '';
+
     const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         props.changeTaskStatus(props.task.id, e.currentTarget.checked, props.todoListID)
     }, [props])
     const changeTaskTitle = useCallback((title: string) => {
         props.changeTaskTitle(props.task.id, title, props.todoListID)
     }, [props])
-    const taskClasses = props.task.isDone ? 'is-done' : '';
 
     return (
         <ListItem alignItems={'center'}
@@ -33,11 +34,10 @@ export const Task: FC<TaskPropsType> = React.memo((props) => {
                 onChange={changeTaskStatus}
                 size={'small'}
             />
-
             <span className={taskClasses}>
-                        <EditableSpan title={props.task.title}
-                                      setNewTitle={changeTaskTitle}/>
-                    </span>
+                <EditableSpan title={props.task.title}
+                              setNewTitle={changeTaskTitle}/>
+            </span>
             <IconButton onClick={() => props.removeTask(props.task.id)}
                         size={'small'}
                         color={'secondary'}>
