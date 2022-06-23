@@ -39,7 +39,7 @@ type ResponseType<D> = {
     data: D
 }
 export const todolistAPI = {
-    getTodolist() {
+    getTodolists() {
         return instance.get<TodolistType[]>(`/todo-lists`)
     },
     createTodolist(title: string) {
