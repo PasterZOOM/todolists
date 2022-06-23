@@ -5,10 +5,10 @@ export default {
     title: 'API'
 }
 
-export const GetTodolists = () => {
+export const GetTodoLists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.getTodolists()
+        todolistAPI.getTodoLists()
             .then(resp => setState(resp.data))
     }, [])
     return <div>{JSON.stringify(state)}</div>
