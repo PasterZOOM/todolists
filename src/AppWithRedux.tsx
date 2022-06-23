@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './reducers/store';
 import {TaskType} from './TodoListWithRedux';
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './reducers/tasks-reducer';
-import {TodoList} from './TodoList';
+import {TodoList} from './Todolist';
 
 // GUI
 // CLI - command line interface

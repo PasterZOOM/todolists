@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import './App.css';
-import {TaskType, TodoList} from './TodoList';
+import {TaskType, TodoList} from './Todolist';
 import {v1} from 'uuid';
 import AddItemForm from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
