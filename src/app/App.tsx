@@ -46,7 +46,7 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={()=>{dispatch(logoutTC())}}>Login</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={()=>{dispatch(logoutTC())}}>Logout</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
